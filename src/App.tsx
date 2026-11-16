@@ -1,89 +1,86 @@
+import axios from 'axios'
+import React,{useEffect, useState} from 'react'
 import './App.css'
-import { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table"
 
-export const App = () => {
-    const [data, setData] = useState([
-        { id: 1, name: "Yusuf", age: 15,job:"Student"},
-        { id: 2, name: "Yusuf", age: 16,job:"Student"},
-        {id: 3, name: "Salmon", age: 25,job:"Backend"},
-        {id: 4, name: "Abubakr", age: 28,job:"Frontend"}
-    ])
+type User = {
+    id: number
+    name: string
+}
 
-    const [name, setName] = useState("")
-    const [age, setAge] = useState("")
-    const [editId, setEditId] = useState(0)
+ const App = () => {
+ const api = 'http://localhost:3000/data'
+ const [data,setData] = useState<User[]>([])
+ const [triger,setTriger]=useState(true)
+ const [name,setName] = useState("")
+ const [editId,setEditId] = useState(0)
 
-    function addUser() {
-        if (editId !== 0) {
-           setData(data.map(el=>
-            el.id===editId?{...el,name:name,age:Number(age)}:el
-            ))
-
-            setEditId(0)
-        } else {
-            setData([...data, {
-
-              
-                id: Date.now(),name: name,age: Number(age)
-            }])
+    async function get() {
+        try {
+            const {data} = await axios.get(api)
+             setData(data)
+             console.log(data);
+             
+        } catch (error) {
+            console.log(error);
+            
         }
-
-        setName("")
-        setAge("")
     }
 
-    function deleteUser(id: number) {
-        setData(data.filter(el => el.id !== id))
+useEffect(()=>{
+    get()
+},[triger])
+
+
+    async function addUser() {
+        if (!name) return
+        try {
+            if (editId !== 0) {
+                await axios.put(`${api}/${editId}`, { name: name })
+                setEditId(0)
+            } else {
+                await axios.post(api, { name: name })
+            }
+            setName("")
+            get()
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    function editUser(el){
+     async function delUser(id: number) {
+        try {
+            await axios.delete(`${api}/${id}`)
+            get()
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function editUser(el: User) {
         setName(el.name)
-        setAge(String(el.age))
         setEditId(el.id)
     }
 
-    return (
-        <div className="max-w-3xl mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-6">YUSUF</h1>
 
-            <div className="flex gap-2 mb-6">
-                <Input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-                <Input placeholder="Age" value={age} onChange={e => setAge(e.target.value)} />
-                <Button onClick={addUser}>{editId !== 0 ? "Save" : "Add"}</Button>
-            </div>
+  return (
+    <div>
+        <button onClick={()=>setTriger(prev=>!prev)}>click</button>
 
-            <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Age</TableHead>
-                            <TableHead>Job</TableHead>
-                            <TableHead>Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-
-                    <TableBody>
-                        {data.map(el => (
-                            <TableRow key={el.id}>
-                                <TableCell>{el.name}</TableCell>
-                                <TableCell>{el.age}</TableCell>
-                                <TableCell>{el.job}</TableCell>
-                                <TableCell className="flex gap-2">
-                                    <Button variant="outline" size="sm" onClick={() => editUser(el)}>Edit</Button>
-                                    <Button variant="destructive" size="sm" onClick={() => deleteUser(el.id)}>Delete</Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </div>
+        <div>
+            <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+            <button onClick={addUser}>{editId !== 0 ? "Save" : "Add"}</button>
         </div>
-  )    
-} 
 
-
-export default App
+        {
+            data.map((el)=>{
+                return <div key={el.id}>
+                    <h1>{el.name}</h1>
+                    <button onClick={()=>editUser(el)}>Edit</button>
+                    <button onClick={()=>delUser(el.id)}>Delete</button>
+                </div>
+            })
+        }
+    </div>
+  ) 
+}
+export default App;

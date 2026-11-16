@@ -1,0 +1,125 @@
+{
+  "data": [
+    {
+      "createdAt": "2026-11-14T09:01:01.760Z",
+      "name": "Dora Franey",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/52.jpg",
+      "age": 83,
+      "status": false,
+      "id": "5"
+    },
+    {
+      "createdAt": "2026-11-13T21:15:10.033Z",
+      "name": "Pablo Bogisich",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/99.jpg",
+      "age": 54,
+      "status": false,
+      "id": "6"
+    },
+    {
+      "createdAt": "2026-11-14T03:52:23.346Z",
+      "name": "Muriel Ryan",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/99.jpg",
+      "age": 5,
+      "status": false,
+      "id": "7"
+    },
+    {
+      "createdAt": "2026-11-14T10:15:01.416Z",
+      "name": "Wade Rutherford",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/0.jpg",
+      "age": 26,
+      "status": false,
+      "id": "8"
+    },
+    {
+      "createdAt": "2026-11-14T09:36:51.702Z",
+      "name": "Shelia Wyman",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/16.jpg",
+      "age": 16,
+      "status": false,
+      "id": "9"
+    },
+    {
+      "createdAt": "2026-11-13T14:29:09.926Z",
+      "name": "Joan Muller",
+      "avatar": "https://avatars.githubusercontent.com/u/62038575",
+      "age": 42,
+      "status": false,
+      "id": "10"
+    },
+    {
+      "createdAt": "2026-11-13T15:59:51.739Z",
+      "name": "Carroll Hartmann",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/60.jpg",
+      "age": 92,
+      "status": false,
+      "id": "11"
+    },
+    {
+      "createdAt": "2026-11-13T16:28:22.482Z",
+      "name": "Tamara Emard V",
+      "avatar": "https://avatars.githubusercontent.com/u/10724276",
+      "age": 57,
+      "status": false,
+      "id": "12"
+    },
+    {
+      "createdAt": "2026-11-14T10:55:14.870Z",
+      "name": "Andre Walker",
+      "avatar": "https://avatars.githubusercontent.com/u/72132900",
+      "age": 8,
+      "status": false,
+      "id": "13"
+    },
+    {
+      "createdAt": "2026-11-14T04:08:42.775Z",
+      "name": "Donnie Nitzsche Sr.",
+      "avatar": "https://avatars.githubusercontent.com/u/1280062",
+      "age": 100,
+      "status": false,
+      "id": "14"
+    },
+    {
+      "createdAt": "2026-11-13T12:55:35.337Z",
+      "name": "Gregg Stroman",
+      "avatar": "https://avatars.githubusercontent.com/u/4105146",
+      "age": 62,
+      "status": false,
+      "id": "15"
+    },
+    {
+      "createdAt": "2026-11-13T15:51:42.159Z",
+      "name": "Frances Labadie",
+      "avatar": "https://avatars.githubusercontent.com/u/20541245",
+      "age": 29,
+      "status": false,
+      "id": "16"
+    },
+    {
+      "createdAt": "2026-11-13T23:02:07.845Z",
+      "name": "Ray Jaskolski",
+      "avatar": "https://avatars.githubusercontent.com/u/38333839",
+      "age": 14,
+      "status": false,
+      "id": "17"
+    },
+    {
+      "createdAt": "2026-11-14T03:53:03.838Z",
+      "name": "Rodolfo Shields",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/71.jpg",
+      "age": 91,
+      "status": false,
+      "id": "18"
+    },
+    {
+      "createdAt": "2026-11-13T13:56:12.934Z",
+      "name": "Andrew Feil",
+      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/female/512/66.jpg",
+      "age": 46,
+      "status": false,
+      "id": "19"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
