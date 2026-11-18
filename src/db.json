@@ -1,20 +1,13 @@
 {
   "data": [
     {
-      "createdAt": "2026-11-14T09:01:01.760Z",
-      "name": "Dora Franey",
-      "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/52.jpg",
-      "age": 83,
-      "status": false,
-      "id": "5"
-    },
-    {
       "createdAt": "2026-11-13T21:15:10.033Z",
-      "name": "Pablo Bogisich",
+      "name": "Pablo Bogisichjon",
       "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/99.jpg",
       "age": 54,
       "status": false,
-      "id": "6"
+      "id": "6",
+      "checked": false
     },
     {
       "createdAt": "2026-11-14T03:52:23.346Z",
@@ -22,7 +15,8 @@
       "avatar": "https://cdn.jsdelivr.net/gh/faker-js/assets-person-portrait/male/512/99.jpg",
       "age": 5,
       "status": false,
-      "id": "7"
+      "id": "7",
+      "checked": false
     },
     {
       "createdAt": "2026-11-14T10:15:01.416Z",
@@ -73,14 +67,6 @@
       "id": "13"
     },
     {
-      "createdAt": "2026-11-14T04:08:42.775Z",
-      "name": "Donnie Nitzsche Sr.",
-      "avatar": "https://avatars.githubusercontent.com/u/1280062",
-      "age": 100,
-      "status": false,
-      "id": "14"
-    },
-    {
       "createdAt": "2026-11-13T12:55:35.337Z",
       "name": "Gregg Stroman",
       "avatar": "https://avatars.githubusercontent.com/u/4105146",
@@ -119,6 +105,11 @@
       "age": 46,
       "status": false,
       "id": "19"
+    },
+    {
+      "name": "yusuf",
+      "checked": false,
+      "id": "poX6sOVY_SQ"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

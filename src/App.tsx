@@ -1,23 +1,58 @@
+
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './App.css'
-
-type User = {
-    id: number
-    name: string
-}
+import Add from './components/ui/add'
+import Table from './components/ui/table1'
 
 const App = () => {
-    const api = 'http://localhost:3000/data'
+    const api = 'https://6ab6577ec4c7bb67b918bd93.mockapi.io/a/data1'
 
-    const [name, setName] = useState("")
-    const [editId, setEditId] = useState(0)
-    const [data, setData] = useState<User[]>([])
-    const [triger, setTriger] = useState(true)
+    const [data, setData] = useState<any[]>([])
+    const [search, setSearch] = useState("")
+    const [select, setSelect] = useState("all")
 
-    function editUser(el: User) {
-        setName(el.name)
-        setEditId(el.id)
+    async function get() {
+        try {
+            const { data } = await axios.get(api)
+            setData(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function addUser(name: string) {
+        try {
+            await axios.post(api, {
+                name: name,
+                checked: false
+            })
+            get()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function saveUser(id: number, name: string) {
+        try {
+            await axios.patch(`${api}/${id}`, {
+                name: name
+            })
+            get()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function checkUser(id: number, checked: boolean) {
+        try {
+            await axios.patch(`${api}/${id}`, {
+                checked: checked
+            })
+            get()
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     async function delUser(id: number) {
@@ -25,60 +60,53 @@ const App = () => {
             await axios.delete(`${api}/${id}`)
             get()
         } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async function addUser() {
-        if (!name) return
-        try {
-            if (editId !== 0) {
-                await axios.put(`${api}/${editId}`, { name: name })
-                setEditId(0)
-            } else {
-                await axios.post(api, { name: name })
-            }
-            setName("")
-            get()
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async function get() {
-        try {
-            const { data } = await axios.get(api)
-            setData(data)
-            console.log(data);
-        } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
     useEffect(() => {
         get()
-    }, [triger])
+    }, [])
+
+    const filtered = data
+        .filter(el => el.name.toLowerCase().includes(search.toLowerCase()))
+        .filter(el =>
+            select === "all"
+                ? true
+                : select === "checked"
+                    ? el.checked === true
+                    : el.checked === false
+        )
 
     return (
         <div>
             <div>
-                <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-                <button onClick={addUser}>{editId !== 0 ? "Save" : "Add"}</button>
+                <input
+                    placeholder="Search"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                />
+
+                <select
+                    value={select}
+                    onChange={e => setSelect(e.target.value)}
+                >
+                    <option value="all">All</option>
+                    <option value="checked">Checked</option>
+                    <option value="unchecked">Unchecked</option>
+                </select>
+
+                <Add addUser={addUser} />
             </div>
 
-            <button onClick={() => setTriger(prev => !prev)}>click</button>
-
-            {
-                data.map((el) => {
-                    return <div key={el.id}>
-                        <h1>{el.name}</h1>
-                        <button onClick={() => delUser(el.id)}>Delete</button>
-                        <button onClick={() => editUser(el)}>Edit</button>
-                    </div>
-                })
-            }
+            <Table
+                data={filtered}
+                checkUser={checkUser}
+                delUser={delUser}
+                saveUser={saveUser}
+            />
         </div>
     )
 }
 
-export default App;
+export default App
