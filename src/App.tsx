@@ -30,14 +30,14 @@ async function addTodo() {
 
         const res = await axios.post(api, formData)
 
-        console.log('SUCCESS:', res.data)
+        console.log( res.data)
 
         await getTodos()
         clearForm()
 
     } catch (error: any) {
-        console.log('ADD ERROR:', error.response?.data)
-    }
+        console.log(error)
+
 }
 
     async function editTodo() {
@@ -65,7 +65,7 @@ async function addTodo() {
 
             getTodos()
         } catch (error: any) {
-            console.log('DELETE ERROR:', error.response?.data || error.message)
+            console.log(error)
         }
     }
 
@@ -91,11 +91,7 @@ async function addTodo() {
             <h1>Todo CRUD</h1>
 
             <div>
-                <input
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
+                <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
 
                 <input
                     placeholder="Description"
@@ -104,26 +100,16 @@ async function addTodo() {
                 />
 
                 {editId === null && (
-                    <input
-                        placeholder="Image URL"
-                        value={images}
-                        onChange={(e) => setImages(e.target.value)}
-                    />
+                    <input placeholder="Image URL" value={images} onChange={(e) => setImages(e.target.value)}/>
                 )}
 
                 {editId === null ? (
-                    <button onClick={addTodo}>
-                        Add
-                    </button>
+                    <button onClick={addTodo}>Add</button>
                 ) : (
-                    <button onClick={editTodo}>
-                        Save
-                    </button>
+                    <button onClick={editTodo}>Save</button>
                 )}
 
-                <button onClick={clearForm}>
-                    Clear
-                </button>
+                <button onClick={clearForm}>Clear</button>
             </div>
 
             <hr />
@@ -157,13 +143,9 @@ async function addTodo() {
                             </td>
 
                             <td>
-                                <button onClick={() => startEdit(el)}>
-                                    Edit
-                                </button>
+                                <button onClick={() => startEdit(el)}>Edit</button>
 
-                                <button onClick={() => deleteTodo(el.id)}>
-                                    Delete
-                                </button>
+                                <button onClick={() => deleteTodo(el.id)}>Delete</button>
                             </td>
                         </tr>
                     ))}
