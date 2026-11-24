@@ -1,55 +1,53 @@
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useFormik } from 'formik'
 
 const App = () => {
     const api = 'https://to-dos-api.softclub.tj/api/to-dos'
 
     const [data, setData] = useState<any[]>([])
-    const [name, setName] = useState('')
-    const [description, setDescription] = useState('')
-    const [images, setImages] = useState('')
     const [editId, setEditId] = useState<number | null>(null)
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            description: '',
+            images: ''
+        },
+
+        onSubmit: async (values, { resetForm }) => {
+            try {
+                if (editId === null) {
+                    const formData = new FormData()
+
+                    formData.append('Name', values.name)
+                    formData.append('Description', values.description)
+                    formData.append('Images', values.images)
+
+                    await axios.post(api, formData)
+                } else {
+                    await axios.put(api, {
+                        id: editId,
+                        name: values.name,
+                        description: values.description
+                    })
+                }
+
+                getTodos()
+                resetForm()
+                setEditId(null)
+
+            } catch (error: any) {
+                console.log(error)
+            }
+        }
+    })
 
     async function getTodos() {
         try {
             const res = await axios.get(api)
             setData(res.data.data)
-        } catch (error: any) {
-            console.log(error)
-        }
-    }
-
-async function addTodo() {
-    try {
-        const formData = new FormData()
-
-        formData.append('Name', name)
-        formData.append('Description', description)
-        formData.append('Images', images)
-
-        const res = await axios.post(api, formData)
-
-        console.log( res.data)
-
-        await getTodos()
-        clearForm()
-
-    } catch (error: any) {
-        console.log(error)
-
-}
-
-    async function editTodo() {
-        try {
-            await axios.put(api, {
-                id: editId,
-                name: name,
-                description: description
-            })
-
-            getTodos()
-            clearForm()
         } catch (error: any) {
             console.log(error)
         }
@@ -71,14 +69,16 @@ async function addTodo() {
 
     function startEdit(el: any) {
         setEditId(el.id)
-        setName(el.name)
-        setDescription(el.description)
+
+        formik.setValues({
+            name: el.name,
+            description: el.description,
+            images: ''
+        })
     }
 
     function clearForm() {
-        setName('')
-        setDescription('')
-        setImages('')
+        formik.resetForm()
         setEditId(null)
     }
 
@@ -90,27 +90,40 @@ async function addTodo() {
         <div>
             <h1>Todo CRUD</h1>
 
-            <div>
-                <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+            <form onSubmit={formik.handleSubmit}>
 
                 <input
+                    name="name"
+                    placeholder="Name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                />
+
+                <input
+                    name="description"
                     placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
                 />
 
                 {editId === null && (
-                    <input placeholder="Image URL" value={images} onChange={(e) => setImages(e.target.value)}/>
+                    <input
+                        name="images"
+                        placeholder="Image URL"
+                        value={formik.values.images}
+                        onChange={formik.handleChange}
+                    />
                 )}
 
-                {editId === null ? (
-                    <button onClick={addTodo}>Add</button>
-                ) : (
-                    <button onClick={editTodo}>Save</button>
-                )}
+                <button type="submit">
+                    {editId === null ? 'Add' : 'Save'}
+                </button>
 
-                <button onClick={clearForm}>Clear</button>
-            </div>
+                <button type="button" onClick={clearForm}>
+                    Clear
+                </button>
+
+            </form>
 
             <hr />
 
@@ -143,9 +156,19 @@ async function addTodo() {
                             </td>
 
                             <td>
-                                <button onClick={() => startEdit(el)}>Edit</button>
+                                <button
+                                    type="button"
+                                    onClick={() => startEdit(el)}
+                                >
+                                    Edit
+                                </button>
 
-                                <button onClick={() => deleteTodo(el.id)}>Delete</button>
+                                <button
+                                    type="button"
+                                    onClick={() => deleteTodo(el.id)}
+                                >
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     ))}
