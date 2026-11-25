@@ -10,7 +10,9 @@ type Props = {
     data: Todo[]
     editTodo: (todo: Todo) => void
     deleteTodo: (id: number) => void
+    
 }
+
 
 const TodoTable = ({ data, editTodo, deleteTodo }: Props) => {
     return (

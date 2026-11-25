@@ -10,26 +10,32 @@ import type { Todo, TodoForm } from './components/types'
 
 import { Input } from '@/components/ui/input'
 
-import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from '@/components/ui/select'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from '@/components/ui/select'
 
 const Crud = () => {
-    const api = 'https://to-dos-api.softclub.tj/api/to-dos'
+    const api: string = 'https://to-dos-api.softclub.tj/api/to-dos'
 
     const [data, setData] = useState<Todo[]>([])
-    const [search, setSearch] = useState('')
-    const [filter, setFilter] = useState('all')
+    const [search, setSearch] = useState<string>('')
+    const [filter, setFilter] = useState<string>('all')
     const [edit, setEdit] = useState<Todo | null>(null)
 
-    async function getTodos() {
+    async function getTodos(): Promise<void> {
         try {
-            const res = await axios.get(api)
+            const res = await axios.get<{ data: Todo[] }>(api)
             setData(res.data.data)
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.log(error)
         }
     }
 
-    async function addTodo(values: TodoForm) {
+    async function addTodo(values: TodoForm): Promise<void> {
         try {
             const formData = new FormData()
 
@@ -40,12 +46,12 @@ const Crud = () => {
             await axios.post(api, formData)
 
             await getTodos()
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.log(error)
         }
     }
 
-    async function saveTodo(values: TodoForm) {
+    async function saveTodo(values: TodoForm): Promise<void> {
         try {
             await axios.put(api, {
                 id: edit?.id,
@@ -55,12 +61,12 @@ const Crud = () => {
 
             await getTodos()
             setEdit(null)
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.log(error)
         }
     }
 
-    async function deleteTodo(id: number) {
+    async function deleteTodo(id: number): Promise<void> {
         try {
             await axios.delete(api, {
                 params: {
@@ -73,23 +79,24 @@ const Crud = () => {
             if (edit?.id === id) {
                 setEdit(null)
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.log(error)
         }
     }
 
-    const filteredData = data.filter((el) => {
-        const text = search.toLowerCase()
+    const filteredData: Todo[] = data.filter((el: Todo) => {
+        const text: string = search.toLowerCase()
 
-        const matchesSearch =
+        const matchesSearch: boolean =
             el.name?.toLowerCase().includes(text) ||
-            el.description?.toLowerCase().includes(text)
+            el.description?.toLowerCase().includes(text) ||
+            false
 
-        const hasImages = Array.isArray(el.images)
+        const hasImages: boolean = Array.isArray(el.images)
             ? el.images.length > 0
             : Boolean(el.images)
 
-        const matchesFilter =
+        const matchesFilter: boolean =
             filter === 'all' ||
             (filter === 'withImages' && hasImages) ||
             (filter === 'withoutImages' && !hasImages)
@@ -127,7 +134,14 @@ const Crud = () => {
                     className="max-w-sm"
                 />
 
-                <Select value={filter} onValueChange={setFilter}>
+                <Select
+                    value={filter}
+                    onValueChange={(value) => {
+                  if (value !== null) {
+    setFilter(value);
+  }
+}}
+                >
                     <SelectTrigger className="w-[200px]">
                         <SelectValue placeholder="Filter" />
                     </SelectTrigger>
